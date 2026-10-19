@@ -11,7 +11,7 @@ export default function Contact() {
           Let&apos;s build <span className="text-gradient">something</span>.
         </h2>
         <p className="mx-auto mt-6 max-w-md text-muted">
-          Hiring for a full-stack role, or have an idea that needs building? My inbox is open.
+          Have a full-stack role or a product idea in mind? I&apos;d love to work with you. My inbox is open.
         </p>
         <a href={`mailto:${profile.email}`} className="mt-8 inline-block break-all font-display text-xl underline decoration-line-strong underline-offset-8 transition-colors hover:text-teal hover:decoration-teal sm:text-2xl">
           {profile.email}

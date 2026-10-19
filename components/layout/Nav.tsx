@@ -40,7 +40,7 @@ export default function Nav() {
           ))}
         </ul>
         <div className="flex items-center gap-2">
-          <a href="#contact" className="btn btn-ghost btn-sm hidden sm:inline-flex">Hire me</a>
+          <a href="#contact" className="btn btn-ghost btn-sm hidden sm:inline-flex">Work with me</a>
           <button
             type="button"
             className="btn btn-ghost btn-sm md:hidden"
