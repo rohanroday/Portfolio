@@ -13,11 +13,13 @@ const description =
 export const metadata: Metadata = {
   title: "Rohan Prasad · Full Stack Developer",
   description,
-  // DEPLOY STEP: add metadataBase with the live URL so og:image becomes absolute.
+  // Live address, so link previews (WhatsApp, LinkedIn) get absolute image and page URLs
+  metadataBase: new URL("https://rohanprasad.vercel.app"),
   openGraph: {
     title: "Rohan Prasad · Full Stack Developer",
     description,
-    images: ["/projects/car-culture.png"],
+    url: "https://rohanprasad.vercel.app",
+    images: ["/og.png"],
   },
 };
 

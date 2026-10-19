@@ -3,6 +3,8 @@
 Personal portfolio of Rohan Prasad, a full stack developer from Sikkim, India.
 A dark, one-page site with a Three.js particle-wave hero, a scroll-driven project showcase and a light smoke cursor trail.
 
+**Live site: https://rohanprasad.vercel.app**
+
 ![Portfolio hero: Rohan Prasad's name over a sea of glowing particle waves](docs/preview.png)
 
 ## Features
