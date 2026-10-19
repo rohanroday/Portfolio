@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import SmoothScroll from "@/components/effects/SmoothScroll";
-import CustomCursor from "@/components/effects/CustomCursor";
+import SmokeCursor from "@/components/effects/SmokeCursor";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -37,7 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="grain" aria-hidden="true" />
         <SmoothScroll />
         {children}
-        <CustomCursor />
+        <SmokeCursor />
       </body>
     </html>
   );

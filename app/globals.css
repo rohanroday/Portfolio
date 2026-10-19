@@ -43,38 +43,12 @@ html.lenis, html.lenis body { height: auto; }
     radial-gradient(30% 25% at 60% 100%, #8b5cf60c, transparent 70%);
 }
 
-/* Hero mesh gradient: large soft colour fields that slowly drift and morph.
-   Radial gradients are already soft, so no blur filter is needed (cheap to animate). */
-.mesh { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-.mesh span { position: absolute; border-radius: 50%; will-change: transform; }
-.mesh-a { width: 75vmax; height: 75vmax; left: -22vmax; top: -38vmax;
-  background: radial-gradient(circle, #7c3aed59 0%, #7c3aed1f 35%, transparent 65%);
-  animation: mesh-a 24s ease-in-out infinite alternate; }
-.mesh-b { width: 70vmax; height: 70vmax; right: -24vmax; bottom: -32vmax;
-  background: radial-gradient(circle, #14b8a673 0%, #14b8a626 35%, transparent 65%);
-  animation: mesh-b 28s ease-in-out infinite alternate; }
-.mesh-c { width: 50vmax; height: 50vmax; left: 30%; top: 10%;
-  background: radial-gradient(circle, #4f46e533 0%, #4f46e512 40%, transparent 68%);
-  animation: mesh-c 32s ease-in-out infinite alternate; }
-.mesh::after { /* vignette keeps the edges deep black and the text crisp */
-  content: ""; position: absolute; inset: 0;
-  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, #0a0a0fcc 100%);
+/* Soft light on the horizon line behind the particle sea */
+.horizon-glow { position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 28% at 50% 52%, #8b5cf622, transparent 70%),
+    radial-gradient(40% 18% at 65% 55%, #2dd4bf1a, transparent 70%);
 }
-@keyframes mesh-a { to { transform: translate(14vmax, 10vmax) scale(1.15); } }
-@keyframes mesh-b { to { transform: translate(-16vmax, -8vmax) scale(1.1); } }
-@keyframes mesh-c { 50% { transform: translate(-12vmax, 8vmax) scale(0.85); } to { transform: translate(8vmax, -4vmax) scale(1.2); } }
-
-/* Custom cursor: a dot on the pointer and a thin ring that follows (positioned in CustomCursor) */
-.cursor-dot, .cursor-ring { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; opacity: 0; transition: opacity 0.3s; will-change: transform; }
-.cursor-dot::before, .cursor-ring::before { content: ""; position: absolute; left: 0; top: 0; border-radius: 50%; transform: translate(-50%, -50%); }
-.cursor-dot::before { width: 6px; height: 6px; background: var(--color-fg); transition: transform 0.25s ease, opacity 0.25s; }
-.cursor-ring::before { width: 34px; height: 34px; border: 1px solid rgba(238, 238, 244, 0.45);
-  transition: width 0.3s ease, height 0.3s ease, background-color 0.3s, border-color 0.3s; }
-.cursor-ring[data-hover="true"]::before { width: 56px; height: 56px; border-color: rgba(238, 238, 244, 0.7); background: rgba(238, 238, 244, 0.06); }
-.cursor-dot[data-hover="true"]::before { transform: translate(-50%, -50%) scale(0); }
-.cursor-ring[data-press="true"]::before { width: 26px; height: 26px; }
-html.has-custom-cursor, html.has-custom-cursor * { cursor: none !important; }
-html.has-custom-cursor input, html.has-custom-cursor textarea { cursor: text !important; }
 
 /* Film grain over everything, no motion */
 .grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.035; transform: translateZ(0);
@@ -130,7 +104,7 @@ html.has-custom-cursor input, html.has-custom-cursor textarea { cursor: text !im
 .marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 /* Off-screen sections stop animating (class set in PageAnimations) */
-.is-offscreen .mesh span, .is-offscreen .marquee-track { animation-play-state: paused; }
+.is-offscreen .marquee-track { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* Scroll cue */
