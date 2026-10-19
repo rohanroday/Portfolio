@@ -1,7 +1,7 @@
 # Rohan Prasad · Portfolio
 
 Personal portfolio of Rohan Prasad, a full stack developer from Sikkim, India.
-A dark, one-page site with a Three.js particle mountain hero, a scroll-driven project showcase and a smoky cursor trail.
+A dark, one-page site with a drifting mesh-gradient hero, a scroll-driven project showcase and a custom dot-and-ring cursor.
 
 ## Tech stack
 
@@ -9,7 +9,6 @@ A dark, one-page site with a Three.js particle mountain hero, a scroll-driven pr
 - Tailwind CSS 4
 - [GSAP](https://gsap.com) + ScrollTrigger for scroll animations
 - [Lenis](https://lenis.darkroom.engineering/) for smooth scrolling
-- [Three.js](https://threejs.org) for the hero scene
 
 ## Run it locally
 
@@ -31,16 +30,16 @@ npm start
 
 ```
 app/
-  layout.tsx          fonts, metadata, smooth scroll, smoke cursor
+  layout.tsx          fonts, metadata, smooth scroll, custom cursor
   page.tsx            puts the sections together
-  globals.css         colours, buttons, aurora, marquee and other shared styles
+  globals.css         colours, buttons, mesh gradient, cursor, marquee and other shared styles
   icon.svg            favicon
 components/
   sections/           one file per page section (Hero, About, Experience, FeaturedWork,
                       CreativeLab, Skills, Achievements, Contact)
   layout/             Nav and Footer
   ui/                 small reusable pieces (SectionHead, ProjectVisual, CopyEmail)
-  effects/            motion and visuals (HeroScene, SmokeCursor, SmoothScroll, PageAnimations)
+  effects/            motion and interaction (CustomCursor, SmoothScroll, PageAnimations)
 content/
   site.ts             all text, projects, skills and links
 public/
@@ -56,6 +55,6 @@ To add a project screenshot, put the image in `public/projects/` and point the p
 
 ## Accessibility and performance
 
-- Visitors who prefer reduced motion get static content: no smooth scroll, 3D animation, aurora or smoke.
-- The smoke cursor only runs for mouse and trackpad users.
-- The 3D scene loads after the page renders, pauses when off-screen, and uses fewer particles on phones.
+- Visitors who prefer reduced motion get static content: no smooth scroll, moving gradient or custom cursor.
+- The custom cursor only runs for mouse and trackpad users; touch screens keep their normal behaviour.
+- Looping background animations pause while their section is off-screen.

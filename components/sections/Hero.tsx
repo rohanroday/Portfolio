@@ -1,17 +1,15 @@
-import HeroCanvas from "@/components/effects/HeroCanvas";
 import { profile } from "@/content/site";
 
 export default function Hero() {
   const nameLetters = profile.name.toUpperCase().split("");
 
   return (
-    <section id="top" data-pause-offscreen className="relative flex min-h-svh items-end overflow-hidden md:items-center">
-      <div className="aurora" aria-hidden="true">
-        <span className="aurora-a" />
-        <span className="aurora-b" />
-        <span className="aurora-c" />
+    <section id="top" data-pause-offscreen className="relative flex min-h-svh items-center overflow-hidden">
+      <div className="mesh" aria-hidden="true">
+        <span className="mesh-a" />
+        <span className="mesh-b" />
+        <span className="mesh-c" />
       </div>
-      <HeroCanvas />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink to-transparent" />
       <div data-hero className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-28 sm:px-8">
         <p className="inline-flex items-center gap-2 rounded-full border border-line bg-ink/50 px-3 py-1.5 text-xs text-muted backdrop-blur">
