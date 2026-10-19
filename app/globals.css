@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #0a0a0f;        /* canvas */
+  --color-surface: #12121a;    /* cards */
+  --color-surface-2: #1a1a25;
+  --color-line: #262634;
+  --color-line-strong: #3d3d52;
+  --color-fg: #eeeef4;         /* text primary */
+  --color-muted: #9a9ab0;      /* text secondary */
+  --color-teal: #2dd4bf;
+  --color-violet: #8b5cf6;
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-grotesk);
+}
+
+html {
+  overflow-x: hidden;
+  overflow-x: clip;
+  color-scheme: dark;
+}
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+  background: var(--color-ink);
+  color: var(--color-fg);
+}
+
+::selection { background: var(--color-teal); color: var(--color-ink); }
+:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; border-radius: 6px; }
+section[id] { scroll-margin-top: 80px; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+
+/* Soft colour pools behind every section so the dark page never looks flat */
+.site-glow { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 85% 20%, #8b5cf614, transparent 70%),
+    radial-gradient(35% 30% at 10% 75%, #2dd4bf10, transparent 70%),
+    radial-gradient(30% 25% at 60% 100%, #8b5cf60c, transparent 70%);
+}
+
+/* Hero aurora: three blurred ribbons that drift slowly behind the particle ridge */
+.aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.aurora::after { /* horizon glow where the ridge meets the sky */
+  content: ""; position: absolute; left: -10%; right: -10%; top: 38%; height: 45%;
+  background: radial-gradient(50% 50% at 60% 50%, #2dd4bf26, #8b5cf614 45%, transparent 70%);
+  filter: blur(20px);
+}
+.aurora span { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5; will-change: transform; }
+.aurora-a { width: 55vw; height: 28vw; left: 35%; top: 8%; background: linear-gradient(100deg, #2dd4bf88, #22d3ee33); animation: aurora-a 18s ease-in-out infinite alternate; }
+.aurora-b { width: 45vw; height: 24vw; left: 5%; top: 18%; background: linear-gradient(80deg, #8b5cf688, #d946ef33); animation: aurora-b 22s ease-in-out infinite alternate; }
+.aurora-c { width: 35vw; height: 18vw; left: 55%; top: 30%; background: linear-gradient(90deg, #6366f166, #2dd4bf44); animation: aurora-c 26s ease-in-out infinite alternate; }
+@keyframes aurora-a { to { transform: translate(-12vw, 4vw) rotate(-8deg) scale(1.15); } }
+@keyframes aurora-b { to { transform: translate(14vw, -3vw) rotate(10deg) scale(0.9); } }
+@keyframes aurora-c { to { transform: translate(-18vw, -5vw) rotate(-12deg) scale(1.2); } }
+@media (max-width: 767px) {
+  .aurora span { filter: blur(50px); }
+  .aurora-a { width: 90vw; height: 60vw; left: 10%; top: 6%; }
+  .aurora-b { width: 80vw; height: 55vw; left: -20%; top: 14%; }
+  .aurora-c { display: none; }
+}
+
+/* Film grain over everything, no motion */
+.grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.035; transform: translateZ(0);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-teal), var(--color-violet) 70%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Component classes sit in a layer so Tailwind utilities (hidden, md:flex…) can override them */
+@layer components {
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 999px; padding: 13px 24px; font-weight: 600; font-size: 15px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: var(--color-fg); color: var(--color-ink); }
+.btn-primary:hover { background: var(--color-teal); }
+.btn-ghost { border: 1px solid var(--color-line-strong); color: var(--color-fg); background: rgba(10, 10, 15, 0.4); backdrop-filter: blur(8px); }
+.btn-ghost:hover { border-color: var(--color-teal); color: var(--color-teal); }
+.btn-sm { padding: 9px 16px; font-size: 14px; }
+@media (pointer: coarse) { .btn { min-height: 44px; } }
+
+.chip { display: inline-flex; align-items: center; border: 1px solid var(--color-line); border-radius: 999px;
+  padding: 4px 11px; font-size: 12.5px; color: var(--color-muted); background: rgba(255,255,255,0.02); }
+
+.eyebrow { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-teal); font-weight: 600; }
+
+}
+
+/* Spotlight cards: a soft glow follows the cursor (position set in PageAnimations) */
+.glow { position: relative; isolation: isolate; }
+.glow::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; opacity: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(45, 212, 191, 0.12), transparent 45%);
+  transition: opacity 0.3s;
+}
+.glow:hover::before { opacity: 1; }
+.glow::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0;
+  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(139, 92, 246, 0.7), transparent 60%);
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  transition: opacity 0.3s;
+}
+.glow:hover::after { opacity: 1; }
+
+/* Infinite marquee */
+.marquee { mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+/* Off-screen sections stop animating (class set in PageAnimations) */
+.is-offscreen .aurora span, .is-offscreen .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* Scroll cue */
+.cue { animation: cue 2s ease-in-out infinite; }
+@keyframes cue { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(6px); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation: none !important; }
+}
+
+/* Hide hero copy until GSAP reveals it, so it never flashes first */
+@media (prefers-reduced-motion: no-preference) {
+  [data-hero] > * { visibility: hidden; }
+}
