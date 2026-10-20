@@ -9,7 +9,7 @@ export default function Hero() {
       <div className="horizon-glow" aria-hidden="true" />
       <HeroCanvas />
       {/* Phones: invite a tap on the waves; fades away by itself */}
-      <p className="tap-hint pointer-events-none absolute left-1/2 top-[34%] -translate-x-1/2 rounded-full border border-line bg-ink/40 px-3 py-1.5 text-xs text-muted backdrop-blur md:hidden" aria-hidden="true">
+      <p className="tap-hint pointer-events-none absolute left-1/2 top-[34%] -translate-x-1/2 whitespace-nowrap rounded-full border border-line bg-ink/40 px-3 py-1.5 text-xs text-muted backdrop-blur md:hidden" aria-hidden="true">
         ✦ Tap the waves
       </p>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink to-transparent" />
