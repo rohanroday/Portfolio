@@ -28,7 +28,8 @@ export const viewport: Viewport = { themeColor: "#0a0a0f" };
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${grotesk.variable} antialiased`}>
-      <body className="min-h-screen font-sans">
+      {/* Browser extensions (e.g. ColorZilla) add attributes to <body> before React loads */}
+      <body className="min-h-screen font-sans" suppressHydrationWarning>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-teal focus:px-4 focus:py-2 focus:text-ink"
