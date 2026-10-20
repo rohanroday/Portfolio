@@ -4,11 +4,11 @@ import { featured } from "@/content/site";
 
 export default function FeaturedWork() {
   return (
-    <section id="work" className="mx-auto max-w-6xl px-4 py-24 sm:px-8 sm:py-32">
+    <section id="work" className="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-32">
       <SectionHead eyebrow="Featured work" title={<>Products I&apos;ve <span className="text-gradient">shipped</span>.</>}>
         Full-stack apps with real payments, real-time updates and the tests to back them.
       </SectionHead>
-      <div className="space-y-10 lg:space-y-16">
+      <div className="space-y-8 sm:space-y-10 lg:space-y-16">
         {featured.map((p, i) => (
           <article key={p.name} data-anim className="glow grid overflow-hidden rounded-3xl border border-line bg-surface lg:grid-cols-2">
             <div className={`border-line max-lg:border-b ${i % 2 ? "lg:order-2 lg:border-l" : "lg:border-r"}`}>

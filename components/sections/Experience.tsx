@@ -3,7 +3,7 @@ import { experience } from "@/content/site";
 
 export default function Experience() {
   return (
-    <section id="experience" className="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <section id="experience" className="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-24">
       <SectionHead eyebrow="Experience" title="Where I've worked and studied." />
       <div className="relative pl-8 sm:pl-12">
         <div className="absolute bottom-2 left-[7px] top-2 w-px bg-line sm:left-[11px]" />

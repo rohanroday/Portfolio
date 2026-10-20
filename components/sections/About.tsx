@@ -3,7 +3,7 @@ import { profile, stats } from "@/content/site";
 
 export default function About() {
   return (
-    <section id="about" className="mx-auto max-w-6xl px-4 py-24 sm:px-8 sm:py-32">
+    <section id="about" className="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-32">
       <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:gap-20">
         <div>
           <SectionHead eyebrow="About" title={<>Full stack, <span className="text-gradient">end to end</span>.</>} />

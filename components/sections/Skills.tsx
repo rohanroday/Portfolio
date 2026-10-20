@@ -3,7 +3,7 @@ import { skills } from "@/content/site";
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 sm:py-32">
+    <section id="skills" className="py-16 sm:py-32">
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
         <SectionHead eyebrow="Toolkit" title="What I build with." />
       </div>

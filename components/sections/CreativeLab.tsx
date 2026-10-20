@@ -56,7 +56,7 @@ export default function CreativeLab() {
 
   return (
     <section id="lab">
-      <div ref={section} className="flex flex-col justify-center overflow-hidden py-24 lg:h-svh lg:pb-8 lg:pt-20">
+      <div ref={section} className="flex flex-col justify-center overflow-hidden py-16 sm:py-24 lg:h-svh lg:pb-8 lg:pt-20">
         <div className="mx-auto mb-10 w-full max-w-6xl px-4 sm:px-8 lg:mb-8">
           <p className="eyebrow">Creative lab</p>
           <h2 className="mt-3 font-display text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -64,6 +64,10 @@ export default function CreativeLab() {
           </h2>
           <p className="mt-4 max-w-xl text-muted lg:[@media(max-height:820px)]:hidden">
             Concept sites I designed and built to push scroll animation, video and 3D on the web. Every one is live.
+          </p>
+          {/* Phones and tablets swipe this row sideways, so say so */}
+          <p className="swipe-hint mt-5 inline-flex items-center gap-2 text-sm text-teal lg:hidden" aria-hidden="true">
+            Swipe to explore <span className="swipe-arrow">→</span>
           </p>
         </div>
         <div

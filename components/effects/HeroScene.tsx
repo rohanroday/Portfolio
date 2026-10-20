@@ -128,17 +128,37 @@ export default function HeroScene() {
     const target = new THREE.Vector2(0, -8);
     const lean = new THREE.Vector2();
     let energy = 0;
-    const onMove = (e: PointerEvent) => {
+    let lastInput = -10;
+    // Point the ripple at a screen position; returns false if it missed the sea
+    const aimAt = (clientX: number, clientY: number) => {
       const rect = el.getBoundingClientRect();
-      if (e.clientY > rect.bottom || e.clientY < rect.top) return;
-      ndc.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+      if (clientY > rect.bottom || clientY < rect.top) return false;
+      ndc.set(((clientX - rect.left) / rect.width) * 2 - 1, -((clientY - rect.top) / rect.height) * 2 + 1);
       raycaster.setFromCamera(ndc, camera);
-      if (raycaster.ray.intersectPlane(plane, hit)) {
-        target.set(hit.x, Math.max(hit.z, -40));
+      if (!raycaster.ray.intersectPlane(plane, hit)) return false;
+      target.set(hit.x, Math.max(hit.z, -40));
+      lastInput = clock.getElapsedTime();
+      return true;
+    };
+    // Mouse: ripples follow the cursor
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return; // a finger moving is a scroll, not an aim
+      if (aimAt(e.clientX, e.clientY)) {
         energy = Math.min(1, energy + Math.min(0.25, Math.abs(e.movementX) + Math.abs(e.movementY)) * 0.15 + 0.04);
       }
     };
+    // Touch: a tap drops a splash where the finger lands
+    const onDown = (e: PointerEvent) => {
+      if (e.pointerType === "touch" && aimAt(e.clientX, e.clientY)) {
+        uniforms.uMouse.value.copy(target);
+        energy = 1;
+      }
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    // Phones have no cursor, so the sea makes its own ripples while nobody is touching it
+    const touchOnly = window.matchMedia("(hover: none)").matches;
+    let nextAuto = 1.2;
 
     const render = () => {
       camera.position.set(lean.x * 0.8, 3.6 + lean.y * 0.25, 8);
@@ -154,7 +174,18 @@ export default function HeroScene() {
     const tick = () => {
       frame = requestAnimationFrame(tick);
       if (!visible) return;
-      uniforms.uTime.value = clock.getElapsedTime();
+      const now = clock.getElapsedTime();
+      uniforms.uTime.value = now;
+      if (touchOnly) {
+        if (now > nextAuto && now - lastInput > 3) {
+          target.set((Math.random() - 0.5) * 12, -5 - Math.random() * 9);
+          uniforms.uMouse.value.copy(target);
+          energy = Math.max(energy, 0.75);
+          nextAuto = now + 2.6 + Math.random() * 1.4;
+        }
+        // Slow camera sway stands in for the mouse lean
+        ndc.set(Math.sin(now * 0.25) * 0.6, Math.sin(now * 0.17) * 0.3);
+      }
       uniforms.uMouse.value.lerp(target, 0.08);
       energy *= 0.985;
       uniforms.uStrength.value += (energy - uniforms.uStrength.value) * 0.06;
@@ -176,6 +207,7 @@ export default function HeroScene() {
       io.disconnect();
       ro.disconnect();
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
       geometry.dispose();
       material.dispose();
       renderer.dispose();

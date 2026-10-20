@@ -111,6 +111,18 @@ html.lenis, html.lenis body { height: auto; }
 .cue { animation: cue 2s ease-in-out infinite; }
 @keyframes cue { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(6px); opacity: 1; } }
 
+/* Touch screens: no grey tap flash, and cards press in slightly when tapped */
+html { -webkit-tap-highlight-color: transparent; }
+@media (hover: none) {
+  .glow { transition: transform 0.25s ease; }
+  .glow:active { transform: scale(0.985); }
+  .btn:active { transform: scale(0.95); }
+}
+
+/* "Swipe to explore" arrow nudges sideways */
+.swipe-arrow { display: inline-block; animation: swipe-nudge 1.6s ease-in-out infinite; }
+@keyframes swipe-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation: none !important; }
 }

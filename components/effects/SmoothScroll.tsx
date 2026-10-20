@@ -6,8 +6,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
+// Phones show/hide the address bar while scrolling; don't recalculate every trigger when that happens
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 // Lenis smooth scrolling driven by GSAP's ticker, so scroll and animations share one clock.
+// Mouse wheels get the smooth glide; touch screens keep the phone's own native momentum,
+// which always feels fastest and most natural under a finger.
 // Off for visitors who prefer reduced motion.
 export default function SmoothScroll() {
   useEffect(() => {
@@ -17,12 +21,8 @@ export default function SmoothScroll() {
         duration: 1.05,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo out
         wheelMultiplier: 0.9,
-        // Phones: Lenis takes over touch scrolling too, with a soft momentum glide
-        syncTouch: true,
-        syncTouchLerp: 0.08,
-        touchInertiaExponent: 1.6,
-        touchMultiplier: 1,
-        anchors: { duration: 1.4 }, // sections already reserve header space with scroll-margin
+        syncTouch: false,
+        anchors: { duration: 1.1 }, // sections already reserve header space with scroll-margin
       });
       lenis.on("scroll", ScrollTrigger.update);
       const raf = (time: number) => lenis.raf(time * 1000);

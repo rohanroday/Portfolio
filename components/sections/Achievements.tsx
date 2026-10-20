@@ -3,7 +3,7 @@ import { achievements } from "@/content/site";
 
 export default function Achievements() {
   return (
-    <section id="achievements" className="mx-auto max-w-6xl px-4 py-24 sm:px-8">
+    <section id="achievements" className="mx-auto max-w-6xl px-4 py-16 sm:px-8 sm:py-24">
       <SectionHead eyebrow="Recognition" title="Achievements & certifications." />
       <div data-anim-stagger className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
         <div className="glow relative overflow-hidden rounded-3xl border border-line bg-gradient-to-br from-surface-2 to-surface p-8 sm:p-10">

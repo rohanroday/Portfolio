@@ -3,7 +3,7 @@ import { profile } from "@/content/site";
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative overflow-hidden px-4 py-32 sm:px-8 sm:py-40">
+    <section id="contact" className="relative overflow-hidden px-4 py-24 sm:px-8 sm:py-40">
       <div className="pointer-events-none absolute left-1/2 top-1/2 size-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,#8b5cf633,#2dd4bf11_50%,transparent_70%)]" />
       <div data-anim className="relative mx-auto max-w-3xl text-center">
         <p className="eyebrow">Contact</p>
