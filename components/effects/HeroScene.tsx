@@ -40,6 +40,36 @@ const vertex = /* glsl */ `
   }
 `;
 
+// Twinkling stars in the sky above the sea
+const starVertex = /* glsl */ `
+  uniform float uTime;
+  uniform float uPixelRatio;
+  attribute float aSeed;
+  varying float vTwinkle;
+  varying float vSeed;
+
+  void main() {
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * mv;
+    vTwinkle = 0.35 + 0.65 * (0.5 + 0.5 * sin(uTime * (0.6 + aSeed * 1.8) + aSeed * 40.0));
+    vSeed = aSeed;
+    gl_PointSize = (1.0 + aSeed * aSeed * 2.6) * uPixelRatio * (26.0 / -mv.z);
+  }
+`;
+
+const starFragment = /* glsl */ `
+  varying float vTwinkle;
+  varying float vSeed;
+
+  void main() {
+    float r = length(gl_PointCoord - 0.5);
+    if (r > 0.5) discard;
+    float a = pow(smoothstep(0.5, 0.0, r), 2.0);
+    vec3 col = mix(vec3(0.86, 0.9, 1.0), vec3(0.55, 0.95, 0.9), step(0.85, vSeed));
+    gl_FragColor = vec4(col, a * vTwinkle * 0.75);
+  }
+`;
+
 const fragment = /* glsl */ `
   varying float vHeight;
   varying float vFade;
@@ -108,6 +138,27 @@ export default function HeroScene() {
     });
     scene.add(new THREE.Points(geometry, material));
 
+    // Star field: sits behind the horizon, fills the sky (most of it on tall phone screens)
+    const starCount = phone ? 420 : 700;
+    const starPos = new Float32Array(starCount * 3);
+    const starSeed = new Float32Array(starCount);
+    for (let i = 0; i < starCount; i++) {
+      starPos.set([(Math.random() - 0.5) * 80, 0.5 + Math.random() * 24, -30 - Math.random() * 10], i * 3);
+      starSeed[i] = Math.random();
+    }
+    const starGeo = new THREE.BufferGeometry();
+    starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+    starGeo.setAttribute("aSeed", new THREE.BufferAttribute(starSeed, 1));
+    const starMat = new THREE.ShaderMaterial({
+      vertexShader: starVertex,
+      fragmentShader: starFragment,
+      uniforms,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    scene.add(new THREE.Points(starGeo, starMat));
+
     const resize = () => {
       const { clientWidth: w, clientHeight: h } = el;
       renderer.setSize(w, h, false);
@@ -164,7 +215,7 @@ export default function HeroScene() {
       camera.position.set(lean.x * 0.8, 3.6 + lean.y * 0.25, 8);
       // Look down at the sea so the rolling rows read clearly.
       // Portrait tilts further down so the sea fills the top half and the copy sits below it.
-      camera.lookAt(0, camera.aspect < 1 ? -4.5 : 0.2, -12);
+      camera.lookAt(0, camera.aspect < 1 ? -6.2 : 0.2, -12);
       renderer.render(scene, camera);
     };
 
@@ -210,6 +261,8 @@ export default function HeroScene() {
       window.removeEventListener("pointerdown", onDown);
       geometry.dispose();
       material.dispose();
+      starGeo.dispose();
+      starMat.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };

@@ -13,7 +13,7 @@ A dark, one-page site with a Three.js particle-wave hero, a scroll-driven projec
 - **Featured work:** Chito, Sikkim Trip and HUSH shown in phone and browser frames with live demo and code links
 - **Creative lab:** concept sites that slide sideways as you scroll down (pinned horizontal scroll)
 - **Scroll animations:** fade-ups, counters, a self-drawing timeline and parallax screenshots with GSAP
-- **Smoke cursor:** a light teal and violet wisp that trails the mouse
+- **Smoke trail:** a light teal and violet wisp that follows the mouse, or your finger on phones
 - **Responsive:** tuned layouts for phones, laptops and wide screens
 - **Accessible:** respects reduced-motion settings, skip link, keyboard focus styles
 
@@ -73,6 +73,6 @@ To add a project screenshot, put the image in `public/projects/` and point the p
 ## Accessibility and performance
 
 - Visitors who prefer reduced motion get static content: no smooth scroll, moving waves or smoke.
-- The smoke cursor only runs for mouse and trackpad users and stops drawing when the mouse is still.
+- The smoke trail stops drawing as soon as the mouse or finger is still, and uses a lighter canvas on phones.
 - The 3D scene loads after the page renders, pauses when off-screen, and uses fewer particles on phones.
 - Looping background animations pause while their section is off-screen.

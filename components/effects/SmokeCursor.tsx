@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-// A light wisp of teal/violet smoke that trails the mouse across the whole site.
+// A light wisp of teal/violet smoke that trails the mouse, or a finger on touch screens, across the whole site.
 // Each puff is a pre-rendered blurred sprite that grows, drifts upward, swirls and fades.
 // Mouse and trackpad only; touch screens and reduced-motion visitors never get it.
 
@@ -29,10 +29,10 @@ export default function SmokeCursor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const fine = window.matchMedia("(pointer: fine)").matches;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const touchOnly = window.matchMedia("(hover: none)").matches;
     const canvas = canvasRef.current;
-    if (!fine || reduced || !canvas) return;
+    if (reduced || !canvas) return;
 
     const ctx = canvas.getContext("2d")!;
     const sprites = COLORS.map(makeSprite);
@@ -40,7 +40,7 @@ export default function SmokeCursor() {
     let dpr = 1;
 
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio, 2);
+      dpr = Math.min(window.devicePixelRatio, touchOnly ? 1.5 : 2); // phones: lighter canvas
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -67,10 +67,8 @@ export default function SmokeCursor() {
       });
     };
 
-    const onMove = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" && e.pointerType !== "pen") return;
-      const x = e.clientX;
-      const y = e.clientY;
+    // Leave a trail from the previous point to (x, y)
+    const trail = (x: number, y: number) => {
       if (last) {
         const dx = x - last.x;
         const dy = y - last.y;
@@ -84,9 +82,28 @@ export default function SmokeCursor() {
       colorShift = (colorShift + 0.02) % sprites.length;
       if (!running) start();
     };
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === "mouse" || e.pointerType === "pen") trail(e.clientX, e.clientY);
+    };
     const onLeave = () => (last = null);
+    // Touch: a small puff where the finger lands, then a trail while it moves (also while scrolling)
+    const onTouchStart = (e: TouchEvent) => {
+      const p = e.touches[0];
+      last = null;
+      for (let i = 0; i < 5; i++) spawn(p.clientX, p.clientY, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 40);
+      last = { x: p.clientX, y: p.clientY };
+      if (!running) start();
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const p = e.touches[0];
+      trail(p.clientX, p.clientY);
+    };
+    const onTouchEnd = () => (last = null);
     window.addEventListener("pointermove", onMove, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
 
     let frame = 0;
     let running = false;
@@ -132,6 +149,9 @@ export default function SmokeCursor() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
     };
   }, []);
 

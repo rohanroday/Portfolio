@@ -119,6 +119,10 @@ html { -webkit-tap-highlight-color: transparent; }
   .btn:active { transform: scale(0.95); }
 }
 
+/* "Tap the waves" hint: fades in after the intro, then away */
+.tap-hint { opacity: 0; animation: tap-hint 7s ease 1.6s forwards; }
+@keyframes tap-hint { 0% { opacity: 0; transform: translate(-50%, 8px); } 12%, 75% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, 0); } }
+
 /* "Swipe to explore" arrow nudges sideways */
 .swipe-arrow { display: inline-block; animation: swipe-nudge 1.6s ease-in-out infinite; }
 @keyframes swipe-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
