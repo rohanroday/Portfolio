@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,6 +15,9 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 // which always feels fastest and most natural under a finger.
 // Off for visitors who prefer reduced motion.
 export default function SmoothScroll() {
+  const lenisRef = useRef<Lenis | null>(null);
+  const pathname = usePathname();
+
   useEffect(() => {
     const mm = gsap.matchMedia();
     mm.add("(prefers-reduced-motion: no-preference)", () => {
@@ -24,6 +28,7 @@ export default function SmoothScroll() {
         syncTouch: false,
         anchors: { duration: 1.1 }, // sections already reserve header space with scroll-margin
       });
+      lenisRef.current = lenis;
       lenis.on("scroll", ScrollTrigger.update);
       const raf = (time: number) => lenis.raf(time * 1000);
       gsap.ticker.add(raf);
@@ -31,10 +36,18 @@ export default function SmoothScroll() {
       return () => {
         gsap.ticker.remove(raf);
         lenis.destroy();
+        lenisRef.current = null;
       };
     });
     return () => mm.revert();
   }, []);
+
+  // New page: start at the top (unless the link points at a section, e.g. /stack#contact)
+  useEffect(() => {
+    if (window.location.hash) return;
+    lenisRef.current?.scrollTo(0, { immediate: true });
+    ScrollTrigger.refresh();
+  }, [pathname]);
 
   return null;
 }

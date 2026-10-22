@@ -1,138 +1,101 @@
 @import "tailwindcss";
 
+/* The Hill Station Picture House: design tokens */
 @theme inline {
-  --color-ink: #0a0a0f;        /* canvas */
-  --color-surface: #12121a;    /* cards */
-  --color-surface-2: #1a1a25;
-  --color-line: #262634;
-  --color-line-strong: #3d3d52;
-  --color-fg: #eeeef4;         /* text primary */
-  --color-muted: #9a9ab0;      /* text secondary */
-  --color-teal: #2dd4bf;
-  --color-violet: #8b5cf6;
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-grotesk);
+  --color-night: #17163a;      /* page background */
+  --color-dusk: #545388;       /* mid purple: borders, numerals */
+  --color-ridge-mid: #3a3972;
+  --color-ridge-near: #100f28;
+  --color-surface: #22214a;    /* cards */
+  --color-line: #2e2d5e;       /* hairlines */
+  --color-blush: #e8b3a9;      /* Ticket 1, intermission, contact card */
+  --color-marigold: #f2b544;   /* Ticket 2, Chito poster, CTAs */
+  --color-cream: #f4ede4;      /* text */
+  --color-lavender: #b9b7e6;   /* muted text */
+  --color-lilac: #d8d5f0;      /* body copy on night */
+  --color-flag-blue: #3e6fb0;
+  --color-flag-red: #c8553d;
+  --color-flag-green: #3f8f5b;
+  --font-marquee: var(--font-big-shoulders);
+  --font-serif: var(--font-instrument-serif);
+  --font-mono: var(--font-jetbrains);
+  --font-sans: var(--font-jetbrains);
 }
 
-html {
-  overflow-x: hidden;
-  overflow-x: clip;
-  color-scheme: dark;
+/* Base rules live in the base layer so Tailwind utilities (text-night etc.) can override them */
+@layer base {
+  html {
+    overflow-x: hidden;
+    overflow-x: clip;
+    color-scheme: dark;
+    background: var(--color-night);
+  }
+  body {
+    overflow-x: hidden;
+    overflow-x: clip;
+    background: var(--color-night);
+    color: var(--color-cream);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    -webkit-tap-highlight-color: transparent;
+  }
+  a { color: inherit; }
+  ::selection { background: var(--color-marigold); color: var(--color-night); }
+  :focus-visible { outline: 2px solid var(--color-marigold); outline-offset: 4px; border-radius: 6px; }
 }
-body {
-  overflow-x: hidden;
-  overflow-x: clip;
-  background: var(--color-ink);
-  color: var(--color-fg);
-}
-
-::selection { background: var(--color-teal); color: var(--color-ink); }
-:focus-visible { outline: 2px solid var(--color-teal); outline-offset: 3px; border-radius: 6px; }
-section[id] { scroll-margin-top: 80px; }
 
 /* Lenis */
 html.lenis, html.lenis body { height: auto; }
 .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
-.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
 
-/* Soft colour pools behind every section so the dark page never looks flat */
-.site-glow { position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background:
-    radial-gradient(40% 35% at 85% 20%, #8b5cf614, transparent 70%),
-    radial-gradient(35% 30% at 10% 75%, #2dd4bf10, transparent 70%),
-    radial-gradient(30% 25% at 60% 100%, #8b5cf60c, transparent 70%);
+/* Letter-spaced small caps used for labels and ticket metadata */
+.caps { letter-spacing: 0.2em; text-transform: uppercase; }
+
+/* [PLACEHOLDER] text: visible on purpose until real content replaces it */
+.ph {
+  background: none; color: inherit; padding: 0 0.25em; border-radius: 4px;
+  outline: 1.5px dashed currentColor; outline-offset: 1px; opacity: 0.85;
 }
 
-/* Soft light on the horizon line behind the particle sea */
-.horizon-glow { position: absolute; inset: 0; pointer-events: none;
-  background:
-    radial-gradient(60% 28% at 50% 52%, #8b5cf622, transparent 70%),
-    radial-gradient(40% 18% at 65% 55%, #2dd4bf1a, transparent 70%);
+/* Pill buttons and links */
+.pill {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px;
+  padding: 12px 22px; border-radius: 999px; font-size: 13px; text-decoration: none;
+  transition: transform 0.25s ease, background-color 0.25s, border-color 0.25s, color 0.25s;
 }
+.pill:active { transform: scale(0.97); }
+.pill-marigold { background: var(--color-marigold); color: var(--color-night); }
+.pill-marigold:hover { background: #ffc961; color: var(--color-night); }
+.pill-ghost { border: 1px solid var(--color-dusk); color: var(--color-cream); }
+.pill-ghost:hover { border-color: var(--color-blush); color: var(--color-blush); }
 
-/* Film grain over everything, no motion */
-.grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.035; transform: translateZ(0);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Tickets: tilt comes from --tilt; hover straightens, lifts and deepens the shadow */
+.ticket {
+  transform: rotate(var(--tilt, 0deg));
+  box-shadow: 0 18px 40px rgba(8, 7, 24, 0.45);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s ease;
 }
+.ticket:hover, .ticket:focus-visible { transform: rotate(0deg) translateY(-8px); box-shadow: 0 34px 70px rgba(8, 7, 24, 0.6); }
+.ticket-notch { position: absolute; left: -13px; width: 24px; height: 24px; border-radius: 50%; background: var(--color-night); }
 
-.text-gradient {
-  background: linear-gradient(100deg, var(--color-teal), var(--color-violet) 70%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
+/* Prayer flags sway from their top edge */
+.flag { transform-box: fill-box; transform-origin: 50% 0; animation: flag-sway 4.5s ease-in-out infinite; }
+@keyframes flag-sway { 0%, 100% { transform: rotate(-4deg) skewX(-2deg); } 50% { transform: rotate(4deg) skewX(2deg); } }
 
-/* Component classes sit in a layer so Tailwind utilities (hidden, md:flex…) can override them */
-@layer components {
-/* Buttons */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  border-radius: 999px; padding: 13px 24px; font-weight: 600; font-size: 15px;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
-}
-.btn:active { transform: scale(0.97); }
-.btn-primary { background: var(--color-fg); color: var(--color-ink); }
-.btn-primary:hover { background: var(--color-teal); }
-.btn-ghost { border: 1px solid var(--color-line-strong); color: var(--color-fg); background: rgba(10, 10, 15, 0.4); backdrop-filter: blur(8px); }
-.btn-ghost:hover { border-color: var(--color-teal); color: var(--color-teal); }
-.btn-sm { padding: 9px 16px; font-size: 14px; }
-@media (pointer: coarse) { .btn { min-height: 44px; } }
+/* Stars twinkle */
+.star { animation: twinkle 3.4s ease-in-out infinite; }
+@keyframes twinkle { 0%, 100% { opacity: var(--o, 0.6); } 50% { opacity: calc(var(--o, 0.6) * 0.35); } }
 
-.chip { display: inline-flex; align-items: center; border: 1px solid var(--color-line); border-radius: 999px;
-  padding: 4px 11px; font-size: 12.5px; color: var(--color-muted); background: rgba(255,255,255,0.02); }
-
-.eyebrow { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-teal); font-weight: 600; }
-
-}
-
-/* Spotlight cards: a soft glow follows the cursor (position set in PageAnimations) */
-.glow { position: relative; isolation: isolate; }
-.glow::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; opacity: 0;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(45, 212, 191, 0.12), transparent 45%);
-  transition: opacity 0.3s;
-}
-.glow:hover::before { opacity: 1; }
-.glow::after {
-  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; opacity: 0;
-  background: radial-gradient(300px circle at var(--mx, 50%) var(--my, 50%), rgba(139, 92, 246, 0.7), transparent 60%);
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  transition: opacity 0.3s;
-}
-.glow:hover::after { opacity: 1; }
-
-/* Infinite marquee */
-.marquee { mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-.marquee-track { display: flex; width: max-content; animation: marquee 40s linear infinite; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
-/* Off-screen sections stop animating (class set in PageAnimations) */
-.is-offscreen .marquee-track { animation-play-state: paused; }
+/* Intermission marquee */
+.marquee-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
-/* Scroll cue */
-.cue { animation: cue 2s ease-in-out infinite; }
-@keyframes cue { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(6px); opacity: 1; } }
+/* Route change: content fades up gently */
+.route-fade { animation: route-fade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes route-fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-/* Touch screens: no grey tap flash, and cards press in slightly when tapped */
-html { -webkit-tap-highlight-color: transparent; }
-@media (hover: none) {
-  .glow { transition: transform 0.25s ease; }
-  .glow:active { transform: scale(0.985); }
-  .btn:active { transform: scale(0.95); }
-}
-
-/* "Tap the waves" hint: fades in after the intro, then away */
-.tap-hint { opacity: 0; animation: tap-hint 7s ease 1.6s forwards; }
-/* Only vertical movement here: horizontal centring comes from the element's own translate */
-@keyframes tap-hint { 0% { opacity: 0; transform: translateY(8px); } 12%, 75% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(0); } }
-
-/* "Swipe to explore" arrow nudges sideways */
-.swipe-arrow { display: inline-block; animation: swipe-nudge 1.6s ease-in-out infinite; }
-@keyframes swipe-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+/* Box-office intro: elements stay hidden until the intro timeline takes over (class set before paint) */
+html.intro [data-intro] { visibility: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: 0.01ms !important; animation: none !important; }
-}
-
-/* Hide hero copy until GSAP reveals it, so it never flashes first */
-@media (prefers-reduced-motion: no-preference) {
-  [data-hero] > * { visibility: hidden; }
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
 }
