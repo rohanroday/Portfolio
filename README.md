@@ -1,78 +1,40 @@
-# Rohan Prasad · Portfolio
+# The Hill Station Picture House
 
-Personal portfolio of Rohan Prasad, a full stack developer from Sikkim, India.
-A dark, one-page site with a Three.js particle-wave hero, a scroll-driven project showcase and a light smoke cursor trail.
+The portfolio of **Rohan Prasad**, a full-stack developer from Sikkim, told as a night at a vintage
+hill-station cinema.
 
 **Live site: https://rohanprasad.vercel.app**
 
-![Portfolio hero: Rohan Prasad's name over a sea of glowing particle waves](docs/preview.png)
+![Box office: two cinema tickets in front of Himalayan ridges at night](docs/preview.png)
 
-## Features
-
-- **Particle wave hero:** a Three.js sea of glowing dots that rolls in slow waves and ripples out from the cursor
-- **Featured work:** Chito, Sikkim Trip and HUSH shown in phone and browser frames with live demo and code links
-- **Creative lab:** concept sites that slide sideways as you scroll down (pinned horizontal scroll)
-- **Scroll animations:** fade-ups, counters, a self-drawing timeline and parallax screenshots with GSAP
-- **Smoke trail:** a light teal and violet wisp that follows the mouse, or your finger on phones
-- **Responsive:** tuned layouts for phones, laptops and wide screens
-- **Accessible:** respects reduced-motion settings, skip link, keyboard focus styles
+## Pages
+- `/` **Box office**: prayer flags, stars, three mountain ridges and two tickets to pick from
+- `/stack` **Ticket 1, The Stack**: the story in five acts, an intermission, and contact
+- `/builds` **Ticket 2, The Builds**: Chito as the feature presentation, plus coming-soon trailers
 
 ## Tech stack
+Next.js (App Router) · TypeScript · Tailwind CSS 4 · GSAP + ScrollTrigger · Lenis · next/font
 
-- [Next.js](https://nextjs.org) 16 (App Router) + TypeScript
-- Tailwind CSS 4
-- [GSAP](https://gsap.com) + ScrollTrigger for scroll animations
-- [Lenis](https://lenis.darkroom.engineering/) for smooth scrolling
-- [Three.js](https://threejs.org) for the particle-wave hero
-
-## Run it locally
-
+## Run it
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000.
-
-Production build:
-
-```bash
-npm run build
-npm start
-```
-
-## Project structure
-
-```
-app/
-  layout.tsx          fonts, metadata, smooth scroll, smoke cursor
-  page.tsx            puts the sections together
-  globals.css         colours, buttons, marquee and other shared styles
-  icon.svg            favicon
-components/
-  sections/           one file per page section (Hero, About, Experience, FeaturedWork,
-                      CreativeLab, Skills, Achievements, Contact)
-  layout/             Nav and Footer
-  ui/                 small reusable pieces (SectionHead, ProjectVisual, CopyEmail)
-  effects/            motion and visuals (HeroScene, SmokeCursor, SmoothScroll, PageAnimations)
-content/
-  site.ts             all text, projects, skills and links
-public/
-  projects/           project screenshots
-docs/
-  preview.png         screenshot used in this README
-```
-
 ## Editing content
+All copy lives in **`content.ts`**. Anything in `[BRACKETS]` is a placeholder and renders on the
+page with a dashed outline until you replace it.
 
-Everything you read on the site lives in `content/site.ts`: profile, experience, featured projects,
-concept sites, skills and achievements. Change the text there and the page updates; no component edits needed.
+## Structure
+```
+app/            layout, globals.css, / (box office), /stack, /builds
+components/     Ticket, ActSection, PosterCard, MountainLayers, PrayerFlags, SoundToggle, ...
+lib/ambience.ts the "sound of the hills" (wind and bells, synthesised with Web Audio)
+content.ts      every word on the site
+```
 
-To add a project screenshot, put the image in `public/projects/` and point the project's `image` field at it.
-
-## Accessibility and performance
-
-- Visitors who prefer reduced motion get static content: no smooth scroll, moving waves or smoke.
-- The smoke trail stops drawing as soon as the mouse or finger is still, and uses a lighter canvas on phones.
-- The 3D scene loads after the page renders, pauses when off-screen, and uses fewer particles on phones.
-- Looping background animations pause while their section is off-screen.
+## Motion and accessibility
+- Box-office intro plays once per visit and can be skipped with the button or any key
+- Tickets straighten on hover and tear at the perforation when clicked
+- Visitors who prefer reduced motion get no intro, parallax or marquee, just the content
+- Sound is off by default and only starts after a click
