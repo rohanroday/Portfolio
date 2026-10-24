@@ -89,6 +89,9 @@ html.lenis, html.lenis body { height: auto; }
 .marquee-bulb { box-shadow: 0 0 6px 1px rgba(255, 236, 200, 0.9); animation: bulb 1.2s steps(1) infinite; }
 @keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
+/* Film sprocket holes along a strip */
+.sprockets { background: radial-gradient(circle at 50% 50%, var(--color-blush) 0 38%, transparent 40%) 0 0 / 22px 100% repeat-x; opacity: 0.85; }
+
 /* Intermission marquee */
 .marquee-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
 @keyframes marquee { to { transform: translateX(-50%); } }
@@ -97,8 +100,11 @@ html.lenis, html.lenis body { height: auto; }
 .route-fade { animation: route-fade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 @keyframes route-fade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
-/* Box-office intro: elements stay hidden until the intro timeline takes over (class set before paint) */
-html.intro [data-intro] { visibility: hidden; }
+/* Box-office title: letters rise in, then the tagline fades up */
+.title-letter { animation: letter-rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes letter-rise { from { transform: translateY(110%); } to { transform: none; } }
+.title-fade { animation: title-fade 0.9s ease 0.9s both; }
+@keyframes title-fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }

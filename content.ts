@@ -35,6 +35,9 @@ export const boxOffice = {
   meta: "FULL-STACK DEVELOPER · SIKKIM · SK 01",
   pick: "TWO SHOWS TONIGHT. PICK ONE TICKET.",
   scroll: "SCROLL TO STEP INSIDE",
+  place: "SINGTAM, SIKKIM · 9:00 PM · THE LAST SHOW",
+  open: "The box office is still open.",
+  window: "THE BOX OFFICE",
 };
 
 export type TicketData = {
@@ -135,6 +138,7 @@ export const actsBeforeIntermission: Act[] = [
 export const intermission = {
   word: "INTERMISSION",
   line: "Fifteen minutes. Hill tea at the counter.",
+  counter: "The snack counter: hill tea, momos, a jar of sweets and a brass bell.",
 };
 
 export const actsAfterIntermission: Act[] = [

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     description: site.description,
     url: site.url,
     siteName: "The Hill Station Picture House",
-    images: [{ url: "/og.png", width: 1440, height: 900, alt: "Rohan Prasad: two cinema tickets in front of Himalayan ridges at night" }],
+    images: [{ url: "/og.png", width: 1200, height: 750, alt: "Rohan Prasad lit on the marquee of an old hill-station cinema at night" }],
     type: "website",
   },
   twitter: { card: "summary_large_image", title: site.title, description: site.description, images: ["/og.png"] },
@@ -26,16 +26,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#17163a" };
 
-// Runs before first paint: on the box office, hide the hero pieces the intro will reveal,
-// unless the visitor prefers reduced motion or has already seen the intro this session.
-const introScript = `try{if(location.pathname==="/"&&!matchMedia("(prefers-reduced-motion: reduce)").matches&&!sessionStorage.getItem("hs-intro")){document.documentElement.classList.add("intro")}}catch(e){}`;
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${bigShoulders.variable} ${instrumentSerif.variable} ${jetbrains.variable} antialiased`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: introScript }} />
-      </head>
       {/* Browser extensions (e.g. ColorZilla) add attributes to <body> before React loads */}
       <body className="min-h-screen" suppressHydrationWarning>
         <a

@@ -33,7 +33,7 @@ export default function Ticket({ t }: { t: TicketData }) {
   };
 
   return (
-    <div data-intro="ticket" className="flex w-full min-w-0 justify-center sm:max-w-[520px] sm:flex-[1_1_400px]">
+    <div className="flex w-full min-w-0 justify-center sm:max-w-[520px] sm:flex-[1_1_400px]">
       <Link
         href={t.href}
         onClick={onClick}
