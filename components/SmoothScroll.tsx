@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { playReelChange } from "@/lib/ambience";
 
 gsap.registerPlugin(ScrollTrigger);
 // Phones show/hide the address bar while scrolling; don't recalculate every trigger when that happens
@@ -43,7 +44,10 @@ export default function SmoothScroll() {
   }, []);
 
   // New page: start at the top (unless the link points at a section, e.g. /stack#contact)
+  const first = useRef(true);
   useEffect(() => {
+    if (first.current) first.current = false;
+    else playReelChange();
     if (window.location.hash) return;
     lenisRef.current?.scrollTo(0, { immediate: true });
     ScrollTrigger.refresh();

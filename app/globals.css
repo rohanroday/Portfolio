@@ -85,6 +85,10 @@ html.lenis, html.lenis body { height: auto; }
 .star { animation: twinkle 3.4s ease-in-out infinite; }
 @keyframes twinkle { 0%, 100% { opacity: var(--o, 0.6); } 50% { opacity: calc(var(--o, 0.6) * 0.35); } }
 
+/* Marquee bulbs on the starring poster blink in a slow chase */
+.marquee-bulb { box-shadow: 0 0 6px 1px rgba(255, 236, 200, 0.9); animation: bulb 1.2s steps(1) infinite; }
+@keyframes bulb { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
 /* Intermission marquee */
 .marquee-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
 @keyframes marquee { to { transform: translateX(-50%); } }

@@ -32,6 +32,69 @@ function noiseBuffer(c: AudioContext, seconds: number) {
   return buf;
 }
 
+// One second of projector sprocket ticks (24 per second), each a tiny filtered click
+function sprocketBuffer(c: AudioContext) {
+  const buf = c.createBuffer(1, c.sampleRate, c.sampleRate);
+  const data = buf.getChannelData(0);
+  const step = c.sampleRate / 24;
+  for (let k = 0; k < 24; k++) {
+    const start = Math.floor(k * step);
+    const amp = 0.6 + Math.random() * 0.4;
+    for (let i = 0; i < 260; i++) {
+      const env = Math.exp(-i / 45);
+      data[start + i] += (Math.random() * 2 - 1) * env * amp * (k % 2 ? 0.7 : 1);
+    }
+  }
+  return buf;
+}
+
+// A short burst of shaped noise through a filter, for one-off effects
+function burst(seconds: number, filterType: BiquadFilterType, freq: number, q: number, level: number, shape: (t: number) => number) {
+  if (!ctx || !master || !on) return;
+  const c = ctx;
+  const len = Math.floor(c.sampleRate * seconds);
+  const buf = c.createBuffer(1, len, c.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * shape(i / len);
+  const src = c.createBufferSource();
+  src.buffer = buf;
+  const f = c.createBiquadFilter();
+  f.type = filterType;
+  f.frequency.value = freq;
+  f.Q.value = q;
+  const g = c.createGain();
+  g.gain.value = level;
+  src.connect(f).connect(g).connect(master);
+  src.start();
+}
+
+/** Paper ticket tearing along the perforation: a crackly rip that speeds up, then snaps. */
+export function playTear() {
+  burst(0.42, "bandpass", 2600, 0.9, 1.4, (t) => {
+    const crackle = Math.random() < 0.18 + t * 0.5 ? 1 : 0.25; // fibres giving way, faster toward the end
+    return crackle * (t < 0.9 ? 0.4 + t * 0.6 : (1 - t) * 10);
+  });
+}
+
+/** Reel change between pages: a low mechanical clunk. */
+export function playReelChange() {
+  if (!ctx || !master || !on) return;
+  const c = ctx;
+  const now = c.currentTime;
+  const osc = c.createOscillator();
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(140, now);
+  osc.frequency.exponentialRampToValueAtTime(48, now + 0.18);
+  const g = c.createGain();
+  g.gain.setValueAtTime(0.0001, now);
+  g.gain.exponentialRampToValueAtTime(0.5, now + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+  osc.connect(g).connect(master);
+  osc.start(now);
+  osc.stop(now + 0.32);
+  burst(0.08, "highpass", 1800, 0.7, 0.6, (t) => 1 - t);
+}
+
 function build(c: AudioContext) {
   master = c.createGain();
   master.gain.value = 0;
@@ -61,6 +124,25 @@ function build(c: AudioContext) {
   wind.start();
   drift.start();
   gust.start();
+
+  // Projector: a low motor hum plus the sprocket clatter of film running at 24 frames a second
+  const hum = c.createOscillator();
+  hum.type = "sawtooth";
+  hum.frequency.value = 58;
+  const humFilter = c.createBiquadFilter();
+  humFilter.type = "lowpass";
+  humFilter.frequency.value = 180;
+  const humGain = c.createGain();
+  humGain.gain.value = 0.035;
+  hum.connect(humFilter).connect(humGain).connect(master);
+  hum.start();
+  const clatter = c.createBufferSource();
+  clatter.buffer = sprocketBuffer(c);
+  clatter.loop = true;
+  const clatterGain = c.createGain();
+  clatterGain.gain.value = 0.05;
+  clatter.connect(clatterGain).connect(master);
+  clatter.start();
 
   // Bells go through a soft echo, like a valley answering
   bellBus = c.createGain();

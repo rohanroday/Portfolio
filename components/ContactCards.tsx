@@ -32,15 +32,6 @@ export default function ContactCards() {
           <a href={site.links.github} target="_blank" rel="noreferrer" className={linkClass}>
             GitHub
           </a>
-          {site.links.resume ? (
-            <a href={site.links.resume} target="_blank" rel="noreferrer" className={linkClass}>
-              Resume
-            </a>
-          ) : (
-            <span className="flex min-h-11 items-center">
-              <mark className="ph">[RESUME LINK]</mark>
-            </span>
-          )}
         </div>
       </div>
     </section>

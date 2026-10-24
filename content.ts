@@ -16,7 +16,6 @@ export const site = {
   links: {
     linkedin: "https://www.linkedin.com/in/rohanprasad28/",
     github: "https://github.com/rohanroday",
-    resume: "", // empty = shows as [RESUME LINK] placeholder; add a URL when ready
     archive: "https://github.com/rohanroday?tab=repositories",
   },
 };
@@ -80,6 +79,13 @@ export const stack = {
   intro: "A full-stack developer from Sikkim. The house lights dim as you scroll; each act fades in like a scene change.",
 };
 
+export const starring = {
+  kicker: "STARRING",
+  name: "ROHAN PRASAD",
+  role: "as the full-stack developer",
+  alt: "Rohan Prasad smiling with arms crossed under hanging Edison bulbs",
+};
+
 export type Act = {
   id: string;
   label: string;
@@ -138,7 +144,7 @@ export const actsAfterIntermission: Act[] = [
     numeral: "04",
     date: "Jan to Jun 2026",
     headline: { before: "Code for the ", em: "state.", tone: "blush" },
-    body: "Intern at the National Informatics Centre, Sikkim. Built a role-based workflow system in React.js for processing and tracking government applications, with approvals routed across departments.",
+    body: "Intern at the National Informatics Centre, Sikkim. Built an employee management system for the Government of Sikkim that took the application process digital: role-based access, approvals routed across departments, and every application tracked.",
   },
   {
     id: "act-5",
@@ -151,9 +157,11 @@ export const actsAfterIntermission: Act[] = [
 ];
 
 export const contact = {
-  basedIn: { label: "BASED IN", place: "Sikkim.", plate: "SK 01", line: "Mountains out the window, prayer flags on the road. [ONE LINE ABOUT LIFE OFF THE KEYBOARD]" },
+  basedIn: { label: "BASED IN", place: "Sikkim.", plate: "SK 01", line: "Mountains out the window, prayer flags on the road. Off the keyboard, one rule: keep going on." },
   curtain: { label: "CURTAIN CALL", title: "Get in touch." },
 };
+
+export type Reel = { label: string; src: string; poster: string; alt: string };
 
 export const builds = {
   ticketLabel: "TICKET 2 · THE PICTURE HOUSE · ROW 26",
@@ -164,11 +172,13 @@ export const builds = {
     top: ["FEATURE PRESENTATION", "REEL 01"],
     sub: "a quick-commerce picture",
     title: "CHITO",
-    screenshots: [
-      { src: "/projects/chito-login.png", alt: "Chito app sign-in screen: a Sikkimese monastery illustration above a phone-number login" },
-      null, // [APP SCREENSHOT 2]
-      null, // [APP SCREENSHOT 3]
-    ],
+    // Screen recordings played back to back on the poster (in /public/projects/chito)
+    reels: [
+      { label: "BROWSE", src: "/projects/chito/chito-1-browsing.mp4", poster: "/projects/chito/chito-1-browsing-poster.webp", alt: "Chito home screen: delivery in 18 minutes, search, and grocery categories" },
+      { label: "AISLES", src: "/projects/chito/chito-2-cart.mp4", poster: "/projects/chito/chito-2-cart-poster.webp", alt: "Browsing Chito's aisles: fresh tarkari and phal, morning chiya and dudh" },
+      { label: "JHOLA", src: "/projects/chito/chito-3-payment.mp4", poster: "/projects/chito/chito-3-payment-poster.webp", alt: "The Jhola cart with bill details and a Place order button" },
+      { label: "TRACK", src: "/projects/chito/chito-4-tracking.mp4", poster: "/projects/chito/chito-4-tracking-poster.webp", alt: "Order tracking: arriving in 18 minutes, from placed to delivered" },
+    ] as Reel[],
     logline: "Groceries for my hometown, ordered on the phone and paid for in one tap.",
     credits: [
       { term: "DIRECTED AND BUILT BY", detail: "Rohan Prasad" },
@@ -188,9 +198,9 @@ export const builds = {
     title: "COMING SOON",
     aside: "TRAILERS BEFORE THE NEXT SHOW",
     posters: [
-      { kicker: "TRAILER 01 · NIC SIKKIM", title: "[NIC PROJECT NAME]", line: "Government tech, Jan to Jun 2026", tone: "blush" as const },
+      { kicker: "TRAILER 01 · NIC SIKKIM", title: "EMPLOYEE MANAGEMENT SYSTEM", line: "Paper applications, made digital for the Government of Sikkim", tone: "blush" as const },
       { kicker: "TRAILER 02 · IN PRODUCTION", title: "THE 3D HOUSE WALKTHROUGH", line: "Room by room, then one slow orbit", tone: "dusk" as const },
-      { kicker: "TRAILER 03 · CLIENT WORK", title: "[CLIENT PROJECT]", line: "Your website could be next", tone: "cream" as const },
+      { kicker: "TRAILER 03 · NOW CASTING", title: "YOUR PROJECT HERE", line: "Open for freelance. Your website could be next", tone: "cream" as const },
     ],
   },
   footer: {

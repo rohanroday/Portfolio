@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import type { TicketData } from "@/content";
+import { playTear } from "@/lib/ambience";
 
 const TONE = { blush: "bg-blush", marigold: "bg-marigold" } as const;
 
@@ -24,6 +25,7 @@ export default function Ticket({ t }: { t: TicketData }) {
     e.preventDefault();
     if (tearing.current) return;
     tearing.current = true;
+    playTear();
     gsap
       .timeline({ onComplete: () => router.push(t.href) })
       .to(body.current, { x: -6, duration: 0.08, yoyo: true, repeat: 1, ease: "power1.inOut" })

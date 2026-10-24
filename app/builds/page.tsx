@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import SubpageHeader from "@/components/SubpageHeader";
 import PosterCard from "@/components/PosterCard";
+import ChitoReel from "@/components/ChitoReel";
 import StackMotion from "@/components/StackMotion";
 import Txt from "@/components/Txt";
 import { builds, site } from "@/content";
@@ -42,19 +42,7 @@ export default function BuildsPage() {
                   {f.title}
                 </h2>
               </div>
-              <div className="grid grid-cols-3 gap-3">
-                {f.screenshots.map((s, i) =>
-                  s ? (
-                    <div key={i} className="overflow-hidden rounded-xl border-2 border-night bg-night">
-                      <Image src={s.src} alt={s.alt} width={780} height={1688} sizes="(min-width: 1024px) 140px, 30vw" className="aspect-[9/17] h-auto w-full object-cover object-top" />
-                    </div>
-                  ) : (
-                    <div key={i} className="flex aspect-[9/17] items-center justify-center rounded-xl border-2 border-dashed border-night/50 p-2 text-center text-[10px] tracking-[0.12em]">
-                      [APP SCREENSHOT {i + 1}]
-                    </div>
-                  ),
-                )}
-              </div>
+              <ChitoReel reels={f.reels} />
             </div>
 
             <div className="flex min-w-0 flex-[999_1_420px] flex-col gap-[22px] p-7 sm:p-11">
